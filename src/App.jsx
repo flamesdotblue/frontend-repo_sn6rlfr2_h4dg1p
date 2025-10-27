@@ -1,28 +1,50 @@
-import { useState } from 'react'
+import Hero3D from './components/Hero3D';
+import AboutUs from './components/AboutUs';
+import ProgramsSection from './components/ProgramsSection';
+import ContactSection from './components/ContactSection';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Navbar() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
+    <header className="fixed top-0 z-50 w-full bg-gradient-to-b from-[#0A0F24]/80 to-transparent backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 text-white">
+        <a href="#" className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#00FFFF] to-[#0078FF]" />
+          <span className="font-heading text-lg font-bold">Grizz</span>
+        </a>
+        <nav className="hidden gap-6 text-sm text-white/80 md:flex">
+          <a className="hover:text-white" href="#about">About</a>
+          <a className="hover:text-white" href="#programs">Programs</a>
+          <a className="hover:text-white" href="#events">Events</a>
+          <a className="hover:text-white" href="#contact">Contact</a>
+        </nav>
+        <a href="#programs" className="hidden rounded-full bg-[#0078FF] px-4 py-2 text-sm text-white shadow-md shadow-[#0078FF]/30 md:inline-block">Join Y-SoC</a>
       </div>
-    </div>
-  )
+    </header>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <div className="min-h-screen bg-[#0A0F24]">
+      <Navbar />
+      <main>
+        <Hero3D />
+        <AboutUs />
+        <ProgramsSection />
+        <ContactSection />
+      </main>
+      <footer className="border-t border-white/10 bg-[#0A0F24] py-8 text-white/70">
+        <div className="mx-auto max-w-7xl px-6 text-sm">
+          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+            <p>© {new Date().getFullYear()} Grizz. All rights reserved.</p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="hover:text-white">Discord</a>
+              <a href="#" className="hover:text-white">LinkedIn</a>
+              <a href="#" className="hover:text-white">Newsletter</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
