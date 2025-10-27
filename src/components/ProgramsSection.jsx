@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo, useState, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 
 const sampleEvents = [
@@ -31,16 +31,21 @@ const sampleEvents = [
 
 export default function ProgramsSection() {
   const [filter, setFilter] = useState('upcoming');
-
   const filtered = useMemo(() => {
     return sampleEvents.filter((e) => (filter === 'all' ? true : e.type === filter));
   }, [filter]);
 
-  return (
-    <section id="programs" className="relative w-full bg-[#0A0F24] py-20 text-white">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_15%_10%,rgba(0,255,255,0.06),transparent_40%),radial-gradient(circle_at_85%_80%,rgba(0,120,255,0.06),transparent_35%)]" />
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 20%'] });
+  const glowOpacity = useTransform(scrollYProgress, [0, 1], [0.2, 0.5]);
 
-      <div className="relative mx-auto max-w-6xl px-6">
+  return (
+    <section ref={ref} id="programs" className="relative w-full min-h-screen snap-start bg-[#0A0F24] py-20 text-white">
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: glowOpacity }}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(0,255,255,0.06),transparent_40%),radial-gradient(circle_at_85%_80%,rgba(0,120,255,0.06),transparent_35%)]" />
+      </div>
+
+      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-6xl flex-col justify-center px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <h2 className="font-heading text-3xl font-bold sm:text-4xl">Programs & Events</h2>
           <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur">
@@ -65,7 +70,8 @@ export default function ProgramsSection() {
                 layout
                 key={event.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl ${

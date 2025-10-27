@@ -1,3 +1,5 @@
+import { motion, useScroll } from 'framer-motion';
+import { useRef } from 'react';
 import Hero3D from './components/Hero3D';
 import AboutUs from './components/AboutUs';
 import ProgramsSection from './components/ProgramsSection';
@@ -24,15 +26,30 @@ function Navbar() {
 }
 
 export default function App() {
+  const scrollRef = useRef(null);
+  const { scrollYProgress } = useScroll({ container: scrollRef });
+
   return (
-    <div className="min-h-screen bg-[#0A0F24]">
+    <div className="h-screen bg-[#0A0F24]">
       <Navbar />
-      <main>
+
+      {/* Scroll progress */}
+      <motion.div
+        className="fixed left-0 right-0 top-0 z-50 h-[3px] origin-left bg-gradient-to-r from-[#FF4D6D] via-[#0078FF] to-[#00FFFF]"
+        style={{ scaleX: scrollYProgress }}
+      />
+
+      {/* Full-page snap scrolling container */}
+      <main
+        ref={scrollRef}
+        className="snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth"
+      >
         <Hero3D />
         <AboutUs />
         <ProgramsSection />
         <ContactSection />
       </main>
+
       <footer className="border-t border-white/10 bg-[#0A0F24] py-8 text-white/70">
         <div className="mx-auto max-w-7xl px-6 text-sm">
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">

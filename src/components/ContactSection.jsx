@@ -1,9 +1,13 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, Send, Phone, MapPin } from 'lucide-react';
 
 export default function ContactSection() {
   const [status, setStatus] = useState('idle');
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 20%'] });
+  const y = useTransform(scrollYProgress, [0, 1], [40, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -13,19 +17,20 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative w-full bg-[#0A0F24] py-20 text-white">
+    <section ref={ref} id="contact" className="relative w-full min-h-screen snap-start bg-[#0A0F24] py-20 text-white">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#0078FF]/20 blur-3xl" />
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
-      <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-2">
+      <div className="relative mx-auto grid min-h-[calc(100vh-6rem)] max-w-6xl grid-cols-1 content-center gap-8 px-6 md:grid-cols-2">
         <div>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
+            style={{ y, opacity }}
             className="font-heading text-3xl font-bold sm:text-4xl"
           >
             Get in Touch

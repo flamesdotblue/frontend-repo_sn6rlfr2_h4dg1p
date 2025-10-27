@@ -22,7 +22,7 @@ export default function Hero3D() {
   }, [mx, my]);
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-b from-[#0A0F24] via-[#0a0f24] to-[#001627] text-white">
+    <section className="relative w-full min-h-screen snap-start overflow-hidden bg-gradient-to-b from-[#0A0F24] via-[#0a0f24] to-[#001627] text-white">
       {/* 3D Scene */}
       <div className="absolute inset-0">
         <Spline

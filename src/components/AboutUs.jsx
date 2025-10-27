@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { Rocket, Target, Sparkles } from 'lucide-react';
 
 const cardVariants = {
@@ -7,16 +8,22 @@ const cardVariants = {
 };
 
 export default function AboutUs() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 20%'] });
+  const y = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
+
   return (
-    <section id="about" className="relative w-full bg-[#0A0F24] py-20 text-white">
+    <section ref={ref} id="about" className="relative w-full min-h-screen snap-start bg-[#0A0F24] py-20 text-white">
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(0,255,255,0.08),transparent_50%),radial-gradient(circle_at_80%_50%,rgba(0,120,255,0.08),transparent_40%)]" />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-6xl flex-col justify-center px-6">
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
+          style={{ y, opacity }}
           className="text-center font-heading text-3xl font-bold sm:text-4xl"
         >
           About Grizz
